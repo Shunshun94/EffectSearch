@@ -14,13 +14,13 @@ com.hiyoko.dx3.search.util.ngram = function(words, max){
   }
 
   return grams;
-}; // >
+};
 
 com.hiyoko.dx3.search.util.ngrams = function(words, min, max){
   var grams = [];
   for(var i = min; i <= max; i++){
     grams = grams.concat(com.hiyoko.dx3.search.util.ngram(words, i));
-  } //>
+  }
   return grams;
 };
 
@@ -34,7 +34,8 @@ com.hiyoko.dx3.search.util.makeIndex = function(effectCsv, opt_length){
     csvline = csvline.trim();
     if(csvline === ""){return};
     var csvValues = csvline.split(',');
-    var ngrams = com.hiyoko.dx3.search.util.ngrams(csvValues[0], 2, maxLength).concat(com.hiyoko.dx3.search.util.ngrams(csvValues[11], 2, maxLength));
+    var ngrams = com.hiyoko.dx3.search.util.ngrams(csvValues[0], 2, maxLength)
+    	.concat(com.hiyoko.dx3.search.util.ngrams(csvValues[11], 2, maxLength));
     com.hiyoko.dx3.search.util.indexing(ind, ngrams, result);
   });
   
@@ -49,18 +50,9 @@ com.hiyoko.dx3.search.util.indexing = function(no, ngrams, referenceIndex){
     if (referenceIndex[gram]) {
       postingList = referenceIndex[gram];
     } else {
-      //postingList = {};
       postingList = [];
     }
     postingList.push(no);
-/*
-    if (postingList[index]) {
-      console.log(referenceIndex);
-      postingList[no].push(index);
-    } else {
-      postingList[no] = [index];
-    }
-*/
     referenceIndex[gram] = postingList;
   });
 };
@@ -75,20 +67,75 @@ com.hiyoko.dx3.search.util.generateInvertedIndex = function(csv){
   return result;
 }
 
+com.hiyoko.dx3.search.util.skillToNumber = function(skills){
+	var skillList = skills.split("/");
+	var result = 0;
+	if(skillList[0] === "-"){
+		return com.hiyoko.dx3.search.SkillEnum["other"];
+	}
+	
+	$.each(skillList, function(i, v){
+		result += com.hiyoko.dx3.search.SkillEnum[v];
+	});
+	return result;
+};
+
+com.hiyoko.dx3.search.util.baseSkillToNumber = function(values){
+	var skillList = values[4].split("/");
+	var result = 0;
+
+	if(skillList[0] === "-"){
+		return com.hiyoko.dx3.search.SkillEnum["other"];
+	}
+	
+	var regResult = com.hiyoko.dx3.search.util.baseSkillToNumber.reg.exec(values[11]);
+	if(regResult){
+		result = com.hiyoko.dx3.search.SkillEnum[skillList[0]] + com.hiyoko.dx3.search.SkillEnum["other"];
+	}
+	
+	$.each(skillList, function(i, v){
+		var test = com.hiyoko.dx3.search.SkillEnum[v];
+		if(test & com.hiyoko.dx3.search.SkillEnum["【肉体】"]){
+			result += com.hiyoko.dx3.search.SkillEnum["【肉体】"];
+		}
+		if(test & com.hiyoko.dx3.search.SkillEnum["【感覚】"]){
+			result += com.hiyoko.dx3.search.SkillEnum["【感覚】"];
+		}
+		if(test & com.hiyoko.dx3.search.SkillEnum["【精神】"]){
+			result += com.hiyoko.dx3.search.SkillEnum["【精神】"];
+		}
+		if(test & com.hiyoko.dx3.search.SkillEnum["【社会】"]){
+			result += com.hiyoko.dx3.search.SkillEnum["【社会】"];
+		}	
+	});
+	return result;
+};
+
+com.hiyoko.dx3.search.util.baseSkillToNumber.reg = new RegExp("このエフェクトを組み合わせた判定は(【..】)で判定を行な?える");
+
 com.hiyoko.dx3.search.util.generateJson = function(csv){
-  var result = "[\n";
+  var result = []
   var csvlines = csv.split('\n');
   $.each(csvlines, function(ind, csvline){
     csvline = csvline.trim();
     if(csvline === ""){return};
-    var line = '   {name:"${WORD1}", syndrome:"${WORD2}", maxLv:${WORD3}, timing:"${WORD4}", skill:"${WORD5}", difficulty:"${WORD6}", target:"${WORD7}", range:"${WORD8}", cost:"${WORD9}", limit:"${WORD10}", reference:"${WORD11}", detail:"${WORD12}"},';
-    var csvValues = csvline.split(',');
-    $.each(csvValues, function(i, value){
-      line = line.replace('${WORD'+(i+1)+'}', value);
-    });
-    result += line + '\n';
+    var values = csvline.split(",");
+    result.push(JSON.stringify({
+    	name:values[0],
+    	syndrome:values[1],
+    	maxLv:values[2],
+    	timing:values[3],
+    	skill:com.hiyoko.dx3.search.util.skillToNumber(values[4]),
+    	baseSkill:com.hiyoko.dx3.search.util.baseSkillToNumber(values),
+    	difficulty:values[5],
+    	target:values[6],
+    	range:values[7],
+    	cost:values[8],
+    	limit:values[9],
+    	reference:values[10],
+    	detail:values[11]
+    }));
   });
-  result += "]";
   return result;
 }
 

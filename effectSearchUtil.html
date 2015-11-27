@@ -8,9 +8,10 @@
 <textarea id="com-hiyoko-util-jointexts-csv" rows="20" cols="50">
 エフェクト名,シンドローム,最大レベル,タイミング,技能,難易度,対象,射程,侵食値,制限,掲載,効果</textarea>
 <br/><input type="button" value="json と転置インデックスをダウンロード" id="com-hiyoko-util-download" />
-<br/><br/><input type="button" value="サンプルデータで試す" id="com-hiyoko-util-sampleData" /></p>
+<br/><br/><input type="button" value="サンプルデータで試す" id="com-hiyoko-util-sampleData" />
 <pre id="com-hiyoko-util-jointexts-c"></pre>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="js/main/skillEnum.js"></script>
 <script src="js/main/effectSearchUtil.js"></script>
 <script src="js/test/testData.js"></script>
 <script>
@@ -29,14 +30,14 @@ $('#com-hiyoko-util-download').click(function(e){
   var text = "var com = com || {};com.hiyoko = com.hiyoko || {};com.hiyoko.dx3 = com.hiyoko.dx3 || {};com.hiyoko.dx3.search = com.hiyoko.dx3.search || {};\ncom.hiyoko.dx3.search.invertedIndex = ";
   text += JSON.stringify(UTIL.generateInvertedIndex(csv)) + ";\n";
   text += "com.hiyoko.dx3.search.effectList = ";
-  text += UTIL.generateJson(csv) + ";";
+  text += UTIL.generateJson(csv).toString() + ";";
 
 
-  blob = new Blob( [text], {type:"text\/javascript"} );
+  var blob = new Blob( [text], {type:"text\/javascript"} );
   $('#com-hiyoko-util-jointexts-c').html('<a href="' +URL.createObjectURL(blob) + '" target="_blank">JSON と転置インデックスをダウンロードする</a>');
 });
 
 </script>
-<p>コードはほぼ テノニッキ (@hideack 's diary) のマルパクリ。 <a href="http://hideack.hatenablog.com/entry/2014/12/13/122037">n-gram の実装</a> <a href="http://hideack.hatenablog.com/entry/2014/12/15/205149">転置インデックスの実装</a></p>
+<p>コードはほぼ テノニッキ (@hideack 's diary) から頂いています。 <a href="http://hideack.hatenablog.com/entry/2014/12/13/122037">n-gram の実装</a> <a href="http://hideack.hatenablog.com/entry/2014/12/15/205149">転置インデックスの実装</a></p>
 </body>
 </html>
