@@ -80,9 +80,38 @@ com.hiyoko.dx3.search.util.skillToNumber = function(skills){
 	return result;
 };
 
-com.hiyoko.dx3.search.util.baseSkillToNumber = function(skills){
-	var skillList = skills.split("/");
+com.hiyoko.dx3.search.util.baseSkillToNumber = function(values){
+	var skillList = values[4].split("/");
+	var result = 0;
+
+	if(skillList[0] === "-"){
+		return com.hiyoko.dx3.search.SkillEnum["other"];
+	}
+	
+	var regResult = com.hiyoko.dx3.search.util.baseSkillToNumber.reg.exec(values[11]);
+	if(regResult){
+		result = com.hiyoko.dx3.search.SkillEnum[skillList[0]] + com.hiyoko.dx3.search.SkillEnum["other"];
+	}
+	
+	$.each(skillList, function(i, v){
+		var test = com.hiyoko.dx3.search.SkillEnum[v];
+		if(test & com.hiyoko.dx3.search.SkillEnum["【肉体】"]){
+			result += com.hiyoko.dx3.search.SkillEnum["【肉体】"];
+		}
+		if(test & com.hiyoko.dx3.search.SkillEnum["【感覚】"]){
+			result += com.hiyoko.dx3.search.SkillEnum["【感覚】"];
+		}
+		if(test & com.hiyoko.dx3.search.SkillEnum["【精神】"]){
+			result += com.hiyoko.dx3.search.SkillEnum["【精神】"];
+		}
+		if(test & com.hiyoko.dx3.search.SkillEnum["【社会】"]){
+			result += com.hiyoko.dx3.search.SkillEnum["【社会】"];
+		}	
+	});
+	return result;
 };
+
+com.hiyoko.dx3.search.util.baseSkillToNumber.reg = new RegExp("このエフェクトを組み合わせた判定は(【..】)で判定を行な?える");
 
 com.hiyoko.dx3.search.util.generateJson = function(csv){
   var result = []
@@ -97,7 +126,7 @@ com.hiyoko.dx3.search.util.generateJson = function(csv){
     	maxLv:values[2],
     	timing:values[3],
     	skill:com.hiyoko.dx3.search.util.skillToNumber(values[4]),
-    	baseSkill:com.hiyoko.dx3.search.util.baseSkillToNumber(values[4]),
+    	baseSkill:com.hiyoko.dx3.search.util.baseSkillToNumber(values),
     	difficulty:values[5],
     	target:values[6],
     	range:values[7],
