@@ -14,13 +14,13 @@ com.hiyoko.dx3.search.util.ngram = function(words, max){
   }
 
   return grams;
-}; // >
+};
 
 com.hiyoko.dx3.search.util.ngrams = function(words, min, max){
   var grams = [];
   for(var i = min; i <= max; i++){
     grams = grams.concat(com.hiyoko.dx3.search.util.ngram(words, i));
-  } //>
+  }
   return grams;
 };
 
@@ -49,18 +49,9 @@ com.hiyoko.dx3.search.util.indexing = function(no, ngrams, referenceIndex){
     if (referenceIndex[gram]) {
       postingList = referenceIndex[gram];
     } else {
-      //postingList = {};
       postingList = [];
     }
     postingList.push(no);
-/*
-    if (postingList[index]) {
-      console.log(referenceIndex);
-      postingList[no].push(index);
-    } else {
-      postingList[no] = [index];
-    }
-*/
     referenceIndex[gram] = postingList;
   });
 };
