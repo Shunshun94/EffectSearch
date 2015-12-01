@@ -8,19 +8,18 @@
 <input type="text" id="word" /><input type="button" value="検索" id="exec" />
 <table border="1" id="display"></table>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../js/main/search.js"></script>
 <script src="effects.js"></script>
 <script>
+  var search = new com.hiyoko.dx3.search.Search(com.hiyoko.dx3.search.invertedIndex, com.hiyoko.dx3.search.effectList);
+
+
   $("#exec").click(function(e){
-    var searchWord = $("#word").val();
-    var list = com.hiyoko.dx3.search.invertedIndex[searchWord];
     $("#display").empty();
-    if(list.length === 0){
-      alert("見つかりませんでした");
-      return;
-    }
-    $.each(list, function(ind, val){
-      console.log(val);
-      $("#display").append("<tr><th>" + com.hiyoko.dx3.search.effectList[val].name + "</th><td>" + com.hiyoko.dx3.search.effectList[val].detail + "</td></tr>");
+    var searchWord = $("#word").val();
+    var list = search.searchByWord(searchWord);
+    search.eachEffects(list, function(effect){
+    	$("#display").append("<tr><th>" + effect.name + "</th><td>" + effect.detail + "</td></tr>");
     });
   });
 
