@@ -21,4 +21,5 @@ com.hiyoko.dx3.search.SkillEnum = {
 		"【精神】":448,
 		"【社会】":3584,
 		"change":4096,
+		"シンドローム":8192
 };
