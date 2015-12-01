@@ -29,8 +29,8 @@ $('#com-hiyoko-util-download').click(function(e){
   var csv = $('#com-hiyoko-util-jointexts-csv').val();
   var text = "var com = com || {};com.hiyoko = com.hiyoko || {};com.hiyoko.dx3 = com.hiyoko.dx3 || {};com.hiyoko.dx3.search = com.hiyoko.dx3.search || {};\ncom.hiyoko.dx3.search.invertedIndex = ";
   text += JSON.stringify(UTIL.generateInvertedIndex(csv)) + ";\n";
-  text += "com.hiyoko.dx3.search.effectList = ";
-  text += UTIL.generateJson(csv).toString() + ";";
+  text += "com.hiyoko.dx3.search.effectList = [";
+  text += UTIL.generateJson(csv).toString() + "];";
 
 
   var blob = new Blob( [text], {type:"text\/javascript"} );

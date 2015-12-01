@@ -8,7 +8,7 @@
 <input type="text" id="word" /><input type="button" value="検索" id="exec" />
 <table border="1" id="display"></table>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="test/testData.js"></script>
+<script src="effects.js"></script>
 <script>
   $("#exec").click(function(e){
     var searchWord = $("#word").val();
@@ -19,9 +19,9 @@
       return;
     }
     $.each(list, function(ind, val){
+      console.log(val);
       $("#display").append("<tr><th>" + com.hiyoko.dx3.search.effectList[val].name + "</th><td>" + com.hiyoko.dx3.search.effectList[val].detail + "</td></tr>");
     });
-
   });
 
 </script>
