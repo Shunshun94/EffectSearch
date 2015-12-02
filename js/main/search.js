@@ -8,15 +8,28 @@ com.hiyoko.dx3.search.Search = function(index, json){
 	this.json = json;
 };
 
+com.hiyoko.dx3.search.Search.DefaultAlgorithm = function(index, json){
+	this.index = index;
+	this.json = json;
+};
+
+
 (function(){
 	var search = com.hiyoko.dx3.search.Search;
+	var defaultAlgorithm = com.hiyoko.dx3.search.Search.DefaultAlgorithm;
 	
-	search.prototype.searchByWord = function(word){
-		var list = this.index[word];
-		if(! list){
-			return [];
-		}
-		return list;
+	search.prototype.parseInput = function(input){
+		return input;
+	};
+	
+	search.prototype.getSearchAlogrithm = function(input){
+		return new defaultAlgorithm(this.index, this.json);
+	};
+	
+	search.prototype.search = function(input){
+		var parsedInput = this.parseInput(input);
+		var searchAlgorithm = this.getSearchAlogrithm(parsedInput);
+		return searchAlgorithm.search(parsedInput);
 	};
 	
 	search.prototype.listToEffects = function(list){
@@ -34,6 +47,18 @@ com.hiyoko.dx3.search.Search = function(index, json){
 		}
 	};
 	
+	
+	defaultAlgorithm.prototype.search = function(input){
+		return this.searchByWord(input);
+	};
+	
+	defaultAlgorithm.prototype.searchByWord = function(word){
+		var list = this.index[word];
+		if(! list){
+			return [];
+		}
+		return list;
+	};
 	
 	
 })();

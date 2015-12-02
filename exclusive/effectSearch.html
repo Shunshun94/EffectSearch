@@ -3,24 +3,49 @@
 <head>
 <meta charset="UTF-8">
 <title>エフェクト検索</title>
+<link rel="stylesheet" href="effectSearch.css" />
 </head>
 <body>
-<input type="text" id="word" /><input type="button" value="検索" id="exec" />
-<table border="1" id="display"></table>
+<div id="effect-search-search-input">
+	<input type="text" id="effect-search-search-input-word" /><input type="button" value="検索" id="effect-search-search-input-exec" />
+</div>
+<div id="effect-search-bottom">
+<div id="effect-search-search-options">
+	<ul>
+		<li>クロスブリード</li>
+		<li>トライブリード</li>
+		<li>他になにか</li>
+		<li>検索オプション</li>
+		<li>こうやって入る</li>
+	</ul>
+</div>
+<div id="effect-search-search-result">
+</div>
+</div>
+<footer><small>Effect Search (仮)</small></footer>
+
+
+
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../js/main/skillEnum.js"></script>
 <script src="../js/main/search.js"></script>
+<script src="../js/main/effectUtil.js"></script>
 <script src="effects.js"></script>
 <script>
   var search = new com.hiyoko.dx3.search.Search(com.hiyoko.dx3.search.invertedIndex, com.hiyoko.dx3.search.effectList);
 
 
-  $("#exec").click(function(e){
-    $("#display").empty();
-    var searchWord = $("#word").val();
-    var list = search.searchByWord(searchWord);
+  $("#effect-search-search-input-exec").click(function(e){
+	$("#effect-search-search-result").empty();
+    var $block = $("<div></div>");
+    var searchWord = $("#effect-search-search-input-word").val();
+    var list = search.search(searchWord);
     search.eachEffects(list, function(effect){
-    	$("#display").append("<tr><th>" + effect.name + "</th><td>" + effect.detail + "</td></tr>");
+    	$block.append(com.hiyoko.dx3.search.EffectUtil.EffectToTable(effect));
     });
+    $("#effect-search-search-result").append($block);
   });
 
 </script>

@@ -70,7 +70,7 @@ com.hiyoko.dx3.search.util.generateInvertedIndex = function(csv){
 com.hiyoko.dx3.search.util.skillToNumber = function(skills){
 	var skillList = skills.split("/");
 	var result = 0;
-	if(skillList[0] === "-"){
+	if(skillList[0] === "-" || skillList[0] === "-"){
 		return com.hiyoko.dx3.search.SkillEnum["other"];
 	}
 	

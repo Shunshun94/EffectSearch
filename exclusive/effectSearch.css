@@ -1,0 +1,35 @@
+#effect-search-bottom{
+	display:box;
+	display: -webkit-box;  
+    display: -moz-box;
+}
+
+#effect-search-search-options{
+	display:none;
+    width:30%;
+    min-width:150px;
+    max-width:200px;
+}
+
+#effect-search-search-result{
+	box-flex: 1;
+	-webkit-box-flex: 1;
+	-moz-box-flex: 1;
+	min-height:400px;
+}
+
+#effect-search-search-result > div{
+
+}
+
+#effect-search-search-result > div > table{
+	magrin: 3px;
+	width:250px;
+	height:300px;
+	display:inline-block;
+	border:2px double black;
+	vertical-align:top;
+}
+#effect-search-search-result > div > table > caption{
+	padding:3px;
+}
