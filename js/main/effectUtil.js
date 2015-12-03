@@ -18,7 +18,6 @@ com.hiyoko.dx3.search.EffectUtil.EffectToTable = function(effect){
 };
 
 com.hiyoko.dx3.search.EffectUtil.skillToText = function(skillNum){
-	console.log(skillNum);
 	if(skillNum === 4096){
 		return "-";
 	}
@@ -49,7 +48,6 @@ com.hiyoko.dx3.search.EffectUtil.skillToText = function(skillNum){
 };
 
 com.hiyoko.dx3.search.EffectUtil.matchSkill = function(skillNum, text){
-	console.log(text + ":" + (skillNum & com.hiyoko.dx3.search.SkillEnum[text]));
 	return (com.hiyoko.dx3.search.SkillEnum[text] === (skillNum & com.hiyoko.dx3.search.SkillEnum[text]));
 };
 	
