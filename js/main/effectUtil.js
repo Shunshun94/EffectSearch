@@ -6,7 +6,8 @@ com.hiyoko.dx3.search.EffectUtil = com.hiyoko.dx3.search.EffectUtil || {};
 
 com.hiyoko.dx3.search.EffectUtil.EffectToTable = function(effect){
 	var table = $("<table class='effect-search-search-result-effect'></table>");
-	table.append("<caption>"+effect.name+"<hr/></caption>");
+	table.append("<caption>"+effect.name +
+			     "<span class='effect-search-search-result-effect-syndrome'>" + com.hiyoko.dx3.search.EffectUtil.syndromeToMark(effect.syndrome) +"</span><hr/></caption>");
 	table.append("<tr><td>最大レベル</td><td colspan='3'>"+effect.maxLv+"</th></tr>");
 	table.append("<tr><td>タイミング</td><td colspan='3'>"+effect.timing+"</th></tr>");
 	table.append("<tr><td>技能</td><td>"+com.hiyoko.dx3.search.EffectUtil.skillToText(effect.skill)+
@@ -15,6 +16,29 @@ com.hiyoko.dx3.search.EffectUtil.EffectToTable = function(effect){
 	table.append("<tr><td>侵蝕率</td><td>"+effect.cost+"</td><td>制限</td><td>"+ effect.limit+"</td></tr>");
 	table.append("<tr><td class='effect-search-search-result-effect-detail' colspan='4'>"+effect.detail+"</td></tr>");
 	return table;
+};
+
+com.hiyoko.dx3.search.EffectUtil.syndromeMarks = {"エンジェルハィロゥ":"天",
+	"バロール":"眼",
+	"ブラックドッグ":"電",
+	"ブラム＝ストーカー":"血",
+	"キュマイラ":"獣",
+	"エグザイル":"柔",
+	"ハヌマーン":"速",
+	"モルフェウス":"創",
+	"ノイマン":"知",
+	"オルクス":"領",
+	"サラマンダー":"熱",
+	"ソラリス":"薬",
+	"ウロボロス":"蛇"};
+
+com.hiyoko.dx3.search.EffectUtil.syndromeToMark = function(syndrome){
+	var mark = com.hiyoko.dx3.search.EffectUtil.syndromeMarks[syndrome];
+	if(mark){
+		return mark;
+	}
+	return "般";
+
 };
 
 com.hiyoko.dx3.search.EffectUtil.skillToText = function(skillNum){

@@ -52,6 +52,8 @@
 	border-radius: 12px;
 }
 
+
+
 .effect-search-search-result-effect-detail{
 	padding:2px;
 }
@@ -63,4 +65,16 @@
 #effect-search-search-result > div > table > caption{
 	padding:3px;
 	font-weight: bold;
+	position:relative;
+}
+
+.effect-search-search-result-effect-syndrome{
+	position:absolute;
+	left:227px;
+	top:-2px;
+	border:solid black 2px;
+	border-radius:12px;
+	padding:2px;
+	font-size:15px;
+	background-color:#FFF0F0;
 }
