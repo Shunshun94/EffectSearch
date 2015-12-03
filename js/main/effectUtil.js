@@ -5,7 +5,7 @@ com.hiyoko.dx3.search = com.hiyoko.dx3.search || {};
 com.hiyoko.dx3.search.EffectUtil = com.hiyoko.dx3.search.EffectUtil || {};
 
 com.hiyoko.dx3.search.EffectUtil.EffectToTable = function(effect){
-	var table = $("<table></table>");
+	var table = $("<table class='effect-search-search-result-effect'></table>");
 	table.append("<caption>"+effect.name+"<hr/></caption>");
 	table.append("<tr><td>最大レベル</td><td colspan='3'>"+effect.maxLv+"</th></tr>");
 	table.append("<tr><td>タイミング</td><td colspan='3'>"+effect.timing+"</th></tr>");
@@ -13,7 +13,7 @@ com.hiyoko.dx3.search.EffectUtil.EffectToTable = function(effect){
 			     "</td><td>難易度</td><td>"+ effect.difficulty+"</td></tr>");
 	table.append("<tr><td>対象</td><td>"+effect.target+"</td><td>射程</td><td>"+ effect.range+"</td></tr>");
 	table.append("<tr><td>侵蝕率</td><td>"+effect.cost+"</td><td>制限</td><td>"+ effect.limit+"</td></tr>");
-	table.append("<tr><td colspan='4'>"+effect.detail+"</td></tr>");
+	table.append("<tr><td class='effect-search-search-result-effect-detail' colspan='4'>"+effect.detail+"</td></tr>");
 	return table;
 };
 

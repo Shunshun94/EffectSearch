@@ -29,7 +29,13 @@
 	display:inline-block;
 	border:2px double black;
 	vertical-align:top;
+	font-size:12px;
 }
+
+.effect-search-search-result-effect-detail{
+	padding:2px;
+}
+
 #effect-search-search-result > div > table > caption{
 	padding:3px;
 }
