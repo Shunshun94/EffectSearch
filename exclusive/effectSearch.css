@@ -78,3 +78,9 @@
 	font-size:15px;
 	background-color:#FFF0F0;
 }
+
+footer{
+	padding:4px;
+	border-top:double black 3px;
+	border-radius: 25px;
+}
