@@ -19,7 +19,7 @@ com.hiyoko.dx3.search.Search.DefaultAlgorithm = function(index, json){
 	var defaultAlgorithm = com.hiyoko.dx3.search.Search.DefaultAlgorithm;
 	
 	search.prototype.parseInput = function(input){
-		return input;
+		return [input];
 	};
 	
 	search.prototype.getSearchAlogrithm = function(input){
@@ -28,8 +28,18 @@ com.hiyoko.dx3.search.Search.DefaultAlgorithm = function(index, json){
 	
 	search.prototype.search = function(input){
 		var parsedInput = this.parseInput(input);
-		var searchAlgorithm = this.getSearchAlogrithm(parsedInput);
-		return searchAlgorithm.search(parsedInput);
+		return this.searchByParsedInputs(parsedInput);
+	};
+	
+	search.prototype.searchByParsedInputs = function(parsedInputs){
+	  var resultList = [];
+	  var len = parsedInputs.length;
+	  var algorithm;
+	  for(var i = 0; i < len; i++){
+	    algorithm = this.getSearchAlogrithm(parsedInputs[i]);
+	    resultList = resultList.concat(algorithm.search(parsedInputs[i]));
+	  }
+	  return resultList;
 	};
 	
 	search.prototype.listToEffects = function(list){
