@@ -19,7 +19,7 @@ com.hiyoko.dx3.search.Search.DefaultAlgorithm = function(index, json){
 	var defaultAlgorithm = com.hiyoko.dx3.search.Search.DefaultAlgorithm;
 	
 	search.prototype.parseInput = function(input){
-		return [input];
+		return input.split(" ");
 	};
 	
 	search.prototype.getSearchAlogrithm = function(input){
@@ -32,12 +32,12 @@ com.hiyoko.dx3.search.Search.DefaultAlgorithm = function(index, json){
 	};
 	
 	search.prototype.searchByParsedInputs = function(parsedInputs){
-	  var resultList = [];
 	  var len = parsedInputs.length;
-	  var algorithm;
-	  for(var i = 0; i < len; i++){
+	  var algorithm = this.getSearchAlogrithm(parsedInputs[0]);
+	  var resultList = algorithm.search(parsedInputs[0]);
+	  for(var i = 1; i < len; i++){
 	    algorithm = this.getSearchAlogrithm(parsedInputs[i]);
-	    resultList = resultList.concat(algorithm.search(parsedInputs[i]));
+	    resultList = _.intersection(resultList,algorithm.search(parsedInputs[i]));
 	  }
 	  return resultList;
 	};
