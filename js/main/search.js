@@ -13,21 +13,26 @@ com.hiyoko.dx3.search.Search.DefaultAlgorithm = function(index, json){
 	this.json = json;
 };
 
+com.hiyoko.dx3.search.Search.EmptyAlgorithm = function(){};
 
 (function(){
 	var search = com.hiyoko.dx3.search.Search;
 	var defaultAlgorithm = com.hiyoko.dx3.search.Search.DefaultAlgorithm;
+	var emptyAlgorithm = com.hiyoko.dx3.search.Search.EmptyAlgorithm;
 	
 	search.prototype.parseInput = function(input){
 		return input.split(" ");
 	};
 	
 	search.prototype.getSearchAlogrithm = function(input){
+		if(input === ""){
+			return new emptyAlgorithm();
+		}
 		return new defaultAlgorithm(this.index, this.json);
 	};
 	
 	search.prototype.search = function(input){
-		var parsedInput = this.parseInput(input);
+		var parsedInput = this.parseInput(input.trim());
 		return this.searchByParsedInputs(parsedInput);
 	};
 	
@@ -37,7 +42,7 @@ com.hiyoko.dx3.search.Search.DefaultAlgorithm = function(index, json){
 	  var resultList = algorithm.search(parsedInputs[0]);
 	  for(var i = 1; i < len; i++){
 	    algorithm = this.getSearchAlogrithm(parsedInputs[i]);
-	    resultList = _.intersection(resultList,algorithm.search(parsedInputs[i]));
+	    resultList = algorithm.apply(resultList,algorithm.search(parsedInputs[i]));
 	  }
 	  return resultList;
 	};
@@ -57,6 +62,9 @@ com.hiyoko.dx3.search.Search.DefaultAlgorithm = function(index, json){
 		}
 	};
 	
+	defaultAlgorithm.prototype.apply = function(base, searchResult){
+		return _.intersection(base, searchResult);
+	};
 	
 	defaultAlgorithm.prototype.search = function(input){
 		return this.searchByWord(input);
@@ -68,6 +76,14 @@ com.hiyoko.dx3.search.Search.DefaultAlgorithm = function(index, json){
 			return [];
 		}
 		return list;
+	};
+	
+	emptyAlgorithm.apply = function(base, searchResult){
+		return base;
+	};
+	
+	emptyAlgorithm.search = function(input){
+		return [];
 	};
 	
 	
