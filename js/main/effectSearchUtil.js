@@ -42,6 +42,17 @@ com.hiyoko.dx3.search.util.makeIndex = function(effectCsv, opt_length){
   return result;
 };
 
+com.hiyoko.dx3.search.util.makeIndexFromJson = function(effectJson, opt_length){
+  var maxLength = opt_length || 14;
+  var result = {};
+  $.each(effectJson, function(ind, effect){
+    var ngrams = com.hiyoko.dx3.search.util.ngrams(effect.name, 2, maxLength)
+    	.concat(com.hiyoko.dx3.search.util.ngrams(effect.detail, 2, maxLength));
+    com.hiyoko.dx3.search.util.indexing(ind, ngrams, result);
+  });
+  
+  return result;
+};
 
 com.hiyoko.dx3.search.util.indexing = function(no, ngrams, referenceIndex){
   ngrams.forEach(function(gram, index, array) {
@@ -65,7 +76,18 @@ com.hiyoko.dx3.search.util.generateInvertedIndex = function(csv){
     });
   }
   return result;
-}
+};
+
+com.hiyoko.dx3.search.util.generateInvertedIndexFromJson = function(json){
+  var result = com.hiyoko.dx3.search.util.makeIndexFromJson(json);
+  for(var gram in result){
+    result[gram] = result[gram].filter(function (x, i, self) {
+      return self.indexOf(x) === i;
+    });
+  }
+  return result;
+};
+
 
 com.hiyoko.dx3.search.util.skillToNumber = function(skills){
 	var skillList = skills.split("/");
