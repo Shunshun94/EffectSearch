@@ -13,21 +13,57 @@ com.hiyoko.dx3.search.Search.DefaultAlgorithm = function(index, json){
 	this.json = json;
 };
 
+com.hiyoko.dx3.search.Search.SyndromeAlgorithm = function(syndromes, json){
+	this.list = syndromes.replace("[syndrome]","").split(",");
+	this.json = json;
+};
+
+com.hiyoko.dx3.search.Search.SkillAlgorithm = function(skills, json){
+	this.list = syndromes.replace("[skill]","").split(",");
+	this.json = json;
+};
+
 com.hiyoko.dx3.search.Search.EmptyAlgorithm = function(){};
 
 (function(){
 	var search = com.hiyoko.dx3.search.Search;
 	var defaultAlgorithm = com.hiyoko.dx3.search.Search.DefaultAlgorithm;
 	var emptyAlgorithm = com.hiyoko.dx3.search.Search.EmptyAlgorithm;
+	var syndromeAlgorithm = com.hiyoko.dx3.search.Search.SyndromeAlgorithm;
+	var skillAlgorithm = com.hiyoko.dx3.search.Search.SkillAlgorithm;
 	
 	search.prototype.parseInput = function(input){
-		return input.split(" ");
+		var returnList = [];
+		var tempList = com.hiyoko.dx3.search.EffectUtil.adjustInputs(input).split(" ");
+		var syndromes = [];//"[syndrome]";
+		
+		$.each(tempList, function(ind, val){
+			if(com.hiyoko.dx3.search.EffectUtil.Syndromes.includes(val)){
+				syndromes.push(val);
+			} else {
+				returnList.push(val);
+			}
+		});
+		
+		if(syndromes.length !== 0){
+			returnList.push("[syndrome]" + syndromes.join());
+		}
+		return returnList;
 	};
 	
 	search.prototype.getSearchAlogrithm = function(input){
 		if(input === ""){
 			return new emptyAlgorithm();
 		}
+		
+		if(input.startsWith("[syndrome]")){
+			return new syndromeAlgorithm(input, this.json);
+		}
+		
+		if(input.startsWith("[skill]")){
+			return new skillAlgorithm(input, this.json);
+		}
+		
 		return new defaultAlgorithm(this.index, this.json);
 	};
 	
@@ -78,11 +114,30 @@ com.hiyoko.dx3.search.Search.EmptyAlgorithm = function(){};
 		return list;
 	};
 	
-	emptyAlgorithm.apply = function(base, searchResult){
+	emptyAlgorithm.prototype.apply = function(base, searchResult){
 		return base;
 	};
 	
-	emptyAlgorithm.search = function(input){
+	emptyAlgorithm.prototype.search = function(input){
+		return [];
+	};
+	
+	syndromeAlgorithm.prototype.apply = function(base, searchResult){
+		var self = this;
+		return base.filter(function(ind){
+			return self.list.includes(self.json[ind].syndrome);
+		});
+	};
+	
+	syndromeAlgorithm.prototype.search = function(input){
+		return [];
+	};
+	
+	skillAlgorithm.prototype.apply = function(base, searchResult){
+		return base;
+	};
+	
+	skillAlgorithm.prototype.search = function(input){
 		return [];
 	};
 	

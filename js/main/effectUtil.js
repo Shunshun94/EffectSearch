@@ -32,6 +32,13 @@ com.hiyoko.dx3.search.EffectUtil.syndromeMarks = {"エンジェルハィロゥ":
 	"ソラリス":"薬",
 	"ウロボロス":"蛇"};
 
+com.hiyoko.dx3.search.EffectUtil.Syndromes = [
+        "エンジェルハィロゥ", "バロール", "ブラックドッグ",
+		"ブラム＝ストーカー", "キュマイラ", "エグザイル",
+		"ハヌマーン", "モルフェウス", "ノイマン",
+		"オルクス", "サラマンダー", "ソラリス", "ウロボロス",
+		"一般"];
+
 com.hiyoko.dx3.search.EffectUtil.syndromeToMark = function(syndrome){
 	var mark = com.hiyoko.dx3.search.EffectUtil.syndromeMarks[syndrome];
 	if(mark){
@@ -74,4 +81,46 @@ com.hiyoko.dx3.search.EffectUtil.skillToText = function(skillNum){
 com.hiyoko.dx3.search.EffectUtil.matchSkill = function(skillNum, text){
 	return (com.hiyoko.dx3.search.SkillEnum[text] === (skillNum & com.hiyoko.dx3.search.SkillEnum[text]));
 };
-	
+
+com.hiyoko.dx3.search.EffectUtil.adjustInputs = function(input){
+	return input.replace("エンジェルハイロウ", "エンジェルハィロゥ");
+};
+
+
+/////////////////////////////////////////////////////////////
+
+if (!String.prototype.startsWith) {
+  String.prototype.startsWith = function(searchString, position) {
+    position = position || 0;
+    return this.indexOf(searchString, position) === position;
+  };
+}
+
+if (!Array.prototype.includes) {
+  Array.prototype.includes = function(searchElement /*, fromIndex*/ ) {
+    'use strict';
+    var O = Object(this);
+    var len = parseInt(O.length) || 0;
+    if (len === 0) {
+      return false;
+    }
+    var n = parseInt(arguments[1]) || 0;
+    var k;
+    if (n >= 0) {
+      k = n;
+    } else {
+      k = len + n;
+      if (k < 0) {k = 0;}
+    }
+    var currentElement;
+    while (k < len) {
+      currentElement = O[k];
+      if (searchElement === currentElement ||
+         (searchElement !== searchElement && currentElement !== currentElement)) { // NaN !== NaN
+        return true;
+      }
+      k++;
+    }
+    return false;
+  };
+}
