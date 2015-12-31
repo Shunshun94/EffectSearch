@@ -27,11 +27,12 @@ com.hiyoko.dx3.search.util.ngrams = function(words, min, max){
 com.hiyoko.dx3.search.util.makeIndex = function(effectCsv, opt_length){
   var maxLength = opt_length || 14;
   var csvlines = effectCsv.split('\n');
-  
+  var debug = Boolean(com.hiyoko.dx3.search.util.getParam("debug", "")) ? function(msg){ console.log("[debug]"+msg); } : function(msg){};
   var result = {};
   
   $.each(csvlines, function(ind, csvline){
     csvline = csvline.trim();
+    debug(csvline);
     if(csvline === ""){return};
     var csvValues = csvline.split(',');
     var ngrams = com.hiyoko.dx3.search.util.ngrams(csvValues[0], 2, maxLength)
@@ -45,7 +46,9 @@ com.hiyoko.dx3.search.util.makeIndex = function(effectCsv, opt_length){
 com.hiyoko.dx3.search.util.makeIndexFromJson = function(effectJson, opt_length){
   var maxLength = opt_length || 14;
   var result = {};
+  var debug = Boolean(com.hiyoko.dx3.search.util.getParam("debug", "")) ? function(msg){ console.log(msg); } : function(msg){};
   $.each(effectJson, function(ind, effect){
+    debug(effect.name);
     var ngrams = com.hiyoko.dx3.search.util.ngrams(effect.name, 2, maxLength)
     	.concat(com.hiyoko.dx3.search.util.ngrams(effect.detail, 2, maxLength));
     com.hiyoko.dx3.search.util.indexing(ind, ngrams, result);
@@ -136,10 +139,12 @@ com.hiyoko.dx3.search.util.baseSkillToNumber = function(values){
 com.hiyoko.dx3.search.util.baseSkillToNumber.reg = new RegExp("このエフェクトを組み合わせた判定は(【..】)で判定を行な?える");
 
 com.hiyoko.dx3.search.util.generateJson = function(csv){
-  var result = []
+  var result = [];
+  var debug = Boolean(com.hiyoko.dx3.search.util.getParam("debug", "")) ? function(msg){ console.log("[debug]"+msg); } : function(msg){};
   var csvlines = csv.split('\n');
   $.each(csvlines, function(ind, csvline){
     csvline = csvline.trim();
+    debug(csvline);
     if(csvline === ""){return};
     var values = csvline.split(",");
     result.push(JSON.stringify({
@@ -148,7 +153,7 @@ com.hiyoko.dx3.search.util.generateJson = function(csv){
     	maxLv:values[2],
     	timing:values[3],
     	skill:com.hiyoko.dx3.search.util.skillToNumber(values[4]),
-    	baseSkill:com.hiyoko.dx3.search.util.baseSkillToNumber(values),
+    	baseSkill:com.hiyoko.dx3.search.util.base.SkillToNumber(values),
     	difficulty:values[5],
     	target:values[6],
     	range:values[7],
@@ -161,19 +166,20 @@ com.hiyoko.dx3.search.util.generateJson = function(csv){
   return result;
 }
 
+com.hiyoko.dx3.search.util.getParam = function(paramName, opt_defaultValue){
+  var defaultResult = "";
+  if(opt_defaultValue !== undefined){ defaultResult = opt_defaultValue; }
+  paramName = paramName + "=";
+  var params = ((location.search).slice(1)).split("&");
+  var paramLength = params.length;
+  for(var i = 0; i < paramLength; i++){
+    if(params[i].indexOf(paramName) == 0){
+      return (params[i].split("="))[1];
+    }
+  }
+  return defaultResult;
+};
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+if(Boolean(com.hiyoko.dx3.search.util.getParam("debug", ""))){
+  console.log("DEBUG MODE");
+}
