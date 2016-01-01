@@ -19,7 +19,7 @@ com.hiyoko.dx3.search.Search.SyndromeAlgorithm = function(syndromes, json){
 };
 
 com.hiyoko.dx3.search.Search.SkillAlgorithm = function(skills, json){
-	this.list = syndromes.replace("[skill]","").split(",");
+	this.list = skills.replace("[skill]","").split(",");
 	this.json = json;
 };
 
@@ -36,10 +36,15 @@ com.hiyoko.dx3.search.Search.EmptyAlgorithm = function(){};
 		var returnList = [];
 		var tempList = com.hiyoko.dx3.search.EffectUtil.adjustInputs(input).split(" ");
 		var syndromes = [];//"[syndrome]";
+		var skills = []; //"[skill]"
 		
 		$.each(tempList, function(ind, val){
 			if(com.hiyoko.dx3.search.EffectUtil.Syndromes.includes(val)){
 				syndromes.push(val);
+			} else if(com.hiyoko.dx3.search.EffectUtil.Skills.includes(val)) {
+				skills.push(val);
+			} else if(com.hiyoko.dx3.search.EffectUtil.Skills.includes("〈"+val+"〉")) {
+				skills.push("〈"+val+"〉");
 			} else {
 				returnList.push(val);
 			}
@@ -47,6 +52,9 @@ com.hiyoko.dx3.search.Search.EmptyAlgorithm = function(){};
 		
 		if(syndromes.length !== 0){
 			returnList.push("[syndrome]" + syndromes.join());
+		}
+		if(skills.length !== 0){
+			returnList.push("[skill]" + skills.join());
 		}
 		return returnList;
 	};
@@ -134,7 +142,16 @@ com.hiyoko.dx3.search.Search.EmptyAlgorithm = function(){};
 	};
 	
 	skillAlgorithm.prototype.apply = function(base, searchResult){
-		return base;
+		var self = this;
+		var len = this.list.length;
+		return base.filter(function(ind){
+			for(var i = 0;  i < len; i++){
+				if((com.hiyoko.dx3.search.SkillEnum[self.list[i]] & self.json[ind].skill) > 0){
+					return true;
+				}
+			}
+			return false;
+		});
 	};
 	
 	skillAlgorithm.prototype.search = function(input){

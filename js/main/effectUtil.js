@@ -39,6 +39,12 @@ com.hiyoko.dx3.search.EffectUtil.Syndromes = [
 		"オルクス", "サラマンダー", "ソラリス", "ウロボロス",
 		"一般"];
 
+com.hiyoko.dx3.search.EffectUtil.Skills = [
+        "〈白兵〉","〈回避〉","〈運転〉",
+        "〈射撃〉","〈知覚〉","〈芸術〉",
+        "〈RC〉","〈意志〉","〈知識〉",
+        "〈交渉〉","〈調達〉","〈情報〉"];
+
 com.hiyoko.dx3.search.EffectUtil.syndromeToMark = function(syndrome){
 	var mark = com.hiyoko.dx3.search.EffectUtil.syndromeMarks[syndrome];
 	if(mark){
