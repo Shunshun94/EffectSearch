@@ -44,7 +44,7 @@ $('#com-hiyoko-util-simple-download').click(function(e){
   text += UTIL.generateJson(csv).toString() + "];";
 
   var blob = new Blob( [text], {type:"text\/javascript"} );
-  $('#com-hiyoko-util-jointexts-c').html('<a href="' +URL.createObjectURL(blob) + '" target="_blank">JSON と転置インデックスをダウンロードする</a>');
+  $('#com-hiyoko-util-jointexts-c').html('<a href="' +URL.createObjectURL(blob) + '" target="_blank">JSON をダウンロードする</a>');
 });
 
 </script>

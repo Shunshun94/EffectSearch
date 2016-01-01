@@ -3,9 +3,10 @@ com.hiyoko = com.hiyoko || {};
 com.hiyoko.dx3 = com.hiyoko.dx3 || {};
 com.hiyoko.dx3.search = com.hiyoko.dx3.search || {};
 
-com.hiyoko.dx3.search.Search = function(index, json){
+com.hiyoko.dx3.search.Search = function(index, json, opt_options){
 	this.index = index;
 	this.json = json;
+	this.options = opt_options || [];
 };
 
 com.hiyoko.dx3.search.Search.DefaultAlgorithm = function(index, json){
@@ -75,8 +76,17 @@ com.hiyoko.dx3.search.Search.EmptyAlgorithm = function(){};
 		return new defaultAlgorithm(this.index, this.json);
 	};
 	
+	search.prototype.getOptions = function(){
+		var result = [];
+		$.each(this.options, function(i, v){
+			result.push(v.getValue());
+		});
+		return " " + result.join(" ");
+	};
+	
 	search.prototype.search = function(input){
-		var parsedInput = this.parseInput(input.trim());
+		var prepareInput = input + this.getOptions();
+		var parsedInput = this.parseInput(prepareInput.trim());
 		return this.searchByParsedInputs(parsedInput);
 	};
 	
