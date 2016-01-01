@@ -14,8 +14,8 @@ search = new com.hiyoko.dx3.search.Search(invertedIndex, com.hiyoko.dx3.search.e
 		"シンドローム", com.hiyoko.dx3.search.EffectUtil.Syndromes
 	),
 	new com.hiyoko.dx3.search.option.OptionBox(
-			"effect-search-search-options-skill",
-			"技能", com.hiyoko.dx3.search.EffectUtil.Skills
+		"effect-search-search-options-skill",
+		"技能", com.hiyoko.dx3.search.EffectUtil.Skills
 	)
 	]);
 
