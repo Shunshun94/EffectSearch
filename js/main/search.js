@@ -26,12 +26,21 @@ com.hiyoko.dx3.search.Search.SkillAlgorithm = function(skills, json){
 
 com.hiyoko.dx3.search.Search.EmptyAlgorithm = function(){};
 
+com.hiyoko.dx3.search.Search.AllAlgorithm = function(length){
+	var result = [];
+	for(var i = 0; i < length; i++){
+		result.push(i);
+	}
+	this.result = result;
+};
+
 (function(){
 	var search = com.hiyoko.dx3.search.Search;
 	var defaultAlgorithm = com.hiyoko.dx3.search.Search.DefaultAlgorithm;
 	var emptyAlgorithm = com.hiyoko.dx3.search.Search.EmptyAlgorithm;
 	var syndromeAlgorithm = com.hiyoko.dx3.search.Search.SyndromeAlgorithm;
 	var skillAlgorithm = com.hiyoko.dx3.search.Search.SkillAlgorithm;
+	var allAlgorithm = com.hiyoko.dx3.search.Search.AllAlgorithm;
 	
 	search.prototype.parseInput = function(input){
 		var returnList = [];
@@ -51,6 +60,10 @@ com.hiyoko.dx3.search.Search.EmptyAlgorithm = function(){};
 			}
 		});
 		
+		if(returnList.length === 0){
+			returnList.push("全件表示");
+		}
+		
 		if(syndromes.length !== 0){
 			returnList.push("[syndrome]" + syndromes.join());
 		}
@@ -63,6 +76,11 @@ com.hiyoko.dx3.search.Search.EmptyAlgorithm = function(){};
 	search.prototype.getSearchAlogrithm = function(input){
 		if(input === ""){
 			return new emptyAlgorithm();
+		}
+		
+		if(input === "全件表示"){
+			console.log(this.json.length);
+			return new allAlgorithm(this.json.length);
 		}
 		
 		if(input.startsWith("[syndrome]")){
@@ -166,6 +184,13 @@ com.hiyoko.dx3.search.Search.EmptyAlgorithm = function(){};
 	
 	skillAlgorithm.prototype.search = function(input){
 		return [];
+	};
+	
+	allAlgorithm.prototype.apply = function(base, searchResult){
+		return this.result;
+	};
+	allAlgorithm.prototype.search = function(input){
+		return this.result;
 	};
 	
 	

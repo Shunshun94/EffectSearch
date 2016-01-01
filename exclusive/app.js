@@ -20,10 +20,21 @@ search = new com.hiyoko.dx3.search.Search(invertedIndex, com.hiyoko.dx3.search.e
 	]);
 
 $("#effect-search-search-input-exec").click(function(e){
+	var searchWord = $("#effect-search-search-input-word").val();
+	if(searchWord.trim() === ""){return;}
 	$("#effect-search-search-result").empty();
 	var $block = $("<div></div>");
-	var searchWord = $("#effect-search-search-input-word").val();
 	var list = search.search(searchWord);
+	search.eachEffects(list, function(effect){
+		$block.append(com.hiyoko.dx3.search.EffectUtil.EffectToTable(effect));
+	});
+	$("#effect-search-search-result").append($block);
+});
+
+$("#effect-search-search-input-exec-all").click(function(e){
+	$("#effect-search-search-result").empty();
+	var $block = $("<div></div>");
+	var list = search.search("全件表示");
 	search.eachEffects(list, function(effect){
 		$block.append(com.hiyoko.dx3.search.EffectUtil.EffectToTable(effect));
 	});
